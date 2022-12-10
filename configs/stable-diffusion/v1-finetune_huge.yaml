@@ -65,25 +65,25 @@ model:
 data:
   target: main.DataModuleFromConfig
   params:
-    batch_size: 6  # prefer highest possible without getting CUDA Out of Memory error, A100 40GB =~20 80GB= ~48
+    batch_size: 48  # prefer highest possible without getting CUDA Out of Memory error, A100 40GB =~20 80GB= ~48
     num_workers: 8
     wrap: falsegit
     train:
       target: ldm.data.every_dream.EveryDreamBatch
       params:
-        repeats: 1   # suggest 1 for 10k+ images
+        repeats: 30   # suggest 1 for 10k+ images
         debug_level: 1   # 1 to print if images are dropped due to multiple-aspect ratio image batching
         conditional_dropout: 0.04   # experimental, likelihood to drop the caption, may help with poorly captioned images
-        resolution: 512   # use 512 for 24GB, can use 576, 640, 704, 768, on higher VRAM cards only..
+        resolution: 768   # use 512 for 24GB, can use 576, 640, 704, 768, on higher VRAM cards only..
         seed: -1  #  use -1 for random seed, affects ordering of images and shuffling
     validation:
       target: ldm.data.ed_validate.EDValidateBatch
       params:
-        repeats: 0.2  # suggest low fractions for 10k+ images
+        repeats: 0.4  # suggest low fractions for 10k+ images
     test:
       target: ldm.data.ed_validate.EDValidateBatch
       params:
-        repeats: 0.2
+        repeats: 0.4
 
 lightning:
   modelcheckpoint:
